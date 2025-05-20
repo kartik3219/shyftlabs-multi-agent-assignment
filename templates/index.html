@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shyftlabs Assignment</title>
+</head>
+<body>
+  <h2>Enter Query</h2>
+  <input type="text" id="query" placeholder="Enter topic" />
+  <button onclick="submitQuery()">Submit</button>
+
+  <h3>Job Queue</h3>
+  <table border="1" id="jobTable">
+    <thead>
+      <tr>
+        <th>Job ID</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="jobBody">
+    </tbody>
+  </table>
+
+  <script>
+    const jobs = {};
+
+    async function submitQuery() {
+      const query = document.getElementById("query").value;
+      const res = await fetch("/api/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query })
+      });
+
+      const data = await res.json();
+      const jobId = data.job_id;
+      addJobToTable(jobId);
+      jobs[jobId] = setInterval(() => checkStatus(jobId), 800);
+    }
+
+    function addJobToTable(jobId) {
+      const row = document.createElement("tr");
+      row.setAttribute("id", `row-${jobId}`);
+
+      const idCell = document.createElement("td");
+      idCell.textContent = jobId;
+
+      const statusCell = document.createElement("td");
+      statusCell.setAttribute("id", `status-${jobId}`);
+      statusCell.textContent = "queued";
+
+      const actionCell = document.createElement("td");
+      actionCell.setAttribute("id", `action-${jobId}`);
+
+      row.appendChild(idCell);
+      row.appendChild(statusCell);
+      row.appendChild(actionCell);
+
+      document.getElementById("jobBody").appendChild(row);
+    }
+
+    async function checkStatus(jobId) {
+      const res = await fetch(`/api/status/${jobId}`);
+      const data = await res.json();
+      document.getElementById(`status-${jobId}`).textContent = data.status;
+      console.log("my data = ",data);
+      if (data.status === "complete") {
+        clearInterval(jobs[jobId]);
+        showDownloadButton(jobId);
+      } else if (data.status === "error") {
+        clearInterval(jobs[jobId]);
+        document.getElementById(`action-${jobId}`).textContent = "Failed";
+      }
+    }
+
+    function showDownloadButton(jobId) {
+      const button = document.createElement("button");
+      button.textContent = "View Report";
+      button.onclick = () => downloadReport(jobId);
+
+      const actionCell = document.getElementById(`action-${jobId}`);
+      actionCell.innerHTML = "";
+      actionCell.appendChild(button);
+    }
+
+    async function downloadReport(jobId) {
+      const res = await fetch(`/api/report/${jobId}`);
+      const data = await res.json();
+
+      const blob = new Blob([data.report], { type: "text/plain" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `report-${jobId}.txt`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
