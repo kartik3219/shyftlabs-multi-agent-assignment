@@ -75,8 +75,9 @@ docker run -p 5000:5000 shyftlabs-multi-agent-assignment
 ##  Future Scalability
 This system has been designed to scale horizontally with minimal architectural changes. 
 Key points:
+- **Distributed Architecture**: Instead of having monolithic architecture all the services will be deployed separately using kubernetes or container apps. 
 - **Worker Expansion**: More worker agents (e.g., research, analysis, writing) can be added to process jobs in parallel.
-- **Queue-based Decoupling**: RabbitMQ ensures agents are decoupled and scalable. Additional workers can subscribe to the same queue.
+- **Queue-based Decoupling**: RabbitMQ ensures agents are decoupled and scalable. Additional workers can subscribe to the same queue. This will also allow to have retry capability.
 - **Load Balancing**: Frontend and backend can be containerized and balanced using NGINX or Kubernetes.
 - **Monitoring Ready**: System structure allows integration of Prometheus/Grafana for real-time monitoring.
 - **Pluggable Agents**: Each agent can be enhanced or replaced without affecting the core pipeline.
