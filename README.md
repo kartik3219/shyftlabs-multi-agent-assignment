@@ -26,6 +26,8 @@ A monolithic AI-powered application that autonomously researches a complex topic
 
 All logic is embedded into a single Python Flask application for simplicity and portability.
 
+**NOTE:** Please refer to Future Scalability Section at the end for better architecture
+
 ### Diagram:
 ![image](https://github.com/user-attachments/assets/4b42123e-a5b5-491a-a77e-b5a384979842)
 
@@ -38,7 +40,6 @@ All logic is embedded into a single Python Flask application for simplicity and 
 | POST   | `/query`            | Submit a new research job               | `{ "query": "Implications of AI" }`       | `{ "job_id": "abc123" }`                 |
 | GET    | `/status/<job_id>`  | Get status of a specific job            | —                                         | `{ "status": "inprogress","report":null }`          |
 | GET    | `/report/<job_id>`  | Download the generated report (if done) | —                                         | Returns `.txt` file                      |
-
 
 ---
 
@@ -69,4 +70,20 @@ docker run -p 5000:5000 shyftlabs-multi-agent-assignment
 ```
 
 ### 4. Go to localhost:5000 to access the UI
+
  
+##  Future Scalability
+This system has been designed to scale horizontally with minimal architectural changes. 
+Key points:
+- **Worker Expansion**: More worker agents (e.g., research, analysis, writing) can be added to process jobs in parallel.
+- **Queue-based Decoupling**: RabbitMQ ensures agents are decoupled and scalable. Additional workers can subscribe to the same queue.
+- **Load Balancing**: Frontend and backend can be containerized and balanced using NGINX or Kubernetes.
+- **Monitoring Ready**: System structure allows integration of Prometheus/Grafana for real-time monitoring.
+- **Pluggable Agents**: Each agent can be enhanced or replaced without affecting the core pipeline.
+
+### Architecture
+![image](https://github.com/user-attachments/assets/f522e3d4-340c-4d3b-99ed-1c2750899804)
+
+
+
+
