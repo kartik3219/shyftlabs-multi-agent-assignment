@@ -1,10 +1,10 @@
-# 🧠 Multi-Agent Research Assistant
+# Multi-Agent Research Assistant
 
 A monolithic AI-powered application that autonomously researches a complex topic, analyzes sources, and generates a summarized report. Built with Flask, HTML/JS, BeautifulSoup, and NLTK. Entire system is containerized using Docker.
 
 ---
 
-## 🚀 Features
+## Features
 
 - Submit any technical/business research topic
 - Agents coordinate to:
@@ -16,7 +16,7 @@ A monolithic AI-powered application that autonomously researches a complex topic
 
 ---
 
-## 🧱 Architecture
+## Architecture
 
 ### Agents:
 - **Research Agent**: Gathers web results using DuckDuckGo & BeautifulSoup
@@ -32,7 +32,6 @@ All logic is embedded into a single Python Flask application for simplicity and 
 
 
 ### APIs:
-## 📡 API Endpoints
 
 | Method | Endpoint            | Description                             | Request Body (if any)                     | Response Example                         |
 |--------|---------------------|-----------------------------------------|-------------------------------------------|----------------------------------------  |
@@ -43,7 +42,7 @@ All logic is embedded into a single Python Flask application for simplicity and 
 
 ---
 
-## 🖥️ UI
+##  UI
 
 - View live job queue
 - Auto-refreshing job status table
@@ -51,7 +50,7 @@ All logic is embedded into a single Python Flask application for simplicity and 
 
 ---
 
-## ⚙️ Setup Instructions
+##  Setup Instructions
 
 ### 1. Clone the Repo
 ```bash
